@@ -3,144 +3,227 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Painting Quiz</title>
+<style type="text/css">
+.painting{
+	background-image: url("https://s-media-cache-ak0.pinimg.com/originals/aa/a9/c6/aaa9c6f35b6b49733b86f33e9c878f5b.jpg");
+}
+.quiz{
+	width: 500px;
+	margin: 0 auto;
+	background-color: #dfdfda;
+}
+.info{
+	width: 800px;
+	margin: 0 auto;
+	background-color: #ffffff;
+	padding-left: 9px;
+	padding-right: 9px;
+}
+.hidden{
+    display:none;
+}
 
+.unhidden{
+    display:block;
+}
+</style>
 <script type="text/javascript">
-	function checkAnswers(){
-		var totalQuestions = 5;
-		var correctAnswers = 0;
-		var ans1 = "correct";
-		var ans2 = "correct";
-		var ans3 = "correct";
-		var ans4 = "correct";
-		var ans5 = "correct";
-		var i;
-		//Check Q1:
-		var a1 = document.getElementsByName('Q1');
-			for (i = 0; i < a1.length; i++){
-				if(a1[i].checked){
-					if(a1[i].value == 'bright'){
-					correctAnswers++;
-					break;
-					}
-					else{
-					ans1 = "incorrect"
-					}
-				}
-			}
-		//Check Q2:
-		var a2 = document.getElementsByName('Q2');
-			for (i = 0; i < a2.length; i++){
-				if(a2[i].checked){
-					if(a2[i].value == 'green'){
-					correctAnswers++;
-					break;
-					}
-					else{
-					ans2 = "incorrect"
-					}
-				}
-			}
-		//Check Q3:
-		var a3 = document.getElementsByName('Q3');
-			for (i = 0; i < a3.length; i++){
-				if(a3[i].checked){
-					if(a3[i].value == 'canvas'){
-					correctAnswers++;
-					break;
-					}
-					else{
-					ans3 = "incorrect"
-					}
-				}
-			}
-		//Check Q4:
-		var a4 = document.getElementsByName('Q4');
-			for (i = 0; i < a4.length; i++){
-				if(a4[i].checked){
-					if(a4[i].value == 'knife'){
-					correctAnswers++;
-					break;
-					}
-					else{
-					ans4 = "incorrect"
-					}
-				}
-			}
-		//Check Q5:
-		var a5 = document.getElementsByName('Q5');
-			for (i = 0; i < a5.length; i++){
-				if(a5[i].checked){
-					if(a5[i].value == 'formFunction'){
-					correctAnswers++;
-					break;
-					}
-					else{
-					ans5 = "incorrect"
-					}
-				}
-			}
+	//Variables:
+	var totalQuestions = 5;
+	var correctAnswers = 0;
+	
+	
+	//Arrays:
+	var answers = ["A", "C", "B", "B", "A"]; //to store answer key
+	var userAns = new Array(4); //to store user answers
+	
+	function main(){
+		getUserAnswer();
+		//alertUserAnswers(); //UNIT TEST
+		evaluateResults();
 		var score = (100/totalQuestions)*correctAnswers;
-		alert("Answers: " + ans1 + ans2 + ans3 + ans4 + ans5);
-		return score;
+		OutputResults(score);
 	}
 	
-	function OutputResults(score){
+	//This function determines if the users answers match the key.
+	function evaluateResults(){
+	 for (var i = 0; i < answers.length; i++){
+		if (answers[i] == userAns[i]){
+			correctAnswers++;
+		}
+	 }
+	}
+	
+	//This function gathers user selection from the form and populates array userAns
+	function getUserAnswer(){
+		//Set a1-a5 to Q1-Q5
+		var a1 = document.getElementsByName('Q1');
+		var a2 = document.getElementsByName('Q2');
+		var a3 = document.getElementsByName('Q3');
+		var a4 = document.getElementsByName('Q4');
+		var a5 = document.getElementsByName('Q5');
+		
+		//Loop through to find the checked radio box
+		//Q1
+		for (i = 0; i < a1.length; i++){
+			if(a1[i].checked){
+				userAns[0] = a1[i].value;
+			}
+		}
+		//Q2
+		for (i = 0; i < a2.length; i++){
+			if(a2[i].checked){
+				userAns[1] = a2[i].value;
+			}
+		}
+		//Q3
+		for (i = 0; i < a3.length; i++){
+			if(a3[i].checked){
+				userAns[2] = a3[i].value;
+			}
+		}
+		//Q4
+		for (i = 0; i < a4.length; i++){
+			if(a4[i].checked){
+				userAns[3] = a4[i].value;
+			}
+		}
+		//Q5
+		for (i = 0; i < a5.length; i++){
+			if(a5[i].checked){
+				userAns[4] = a5[i].value;
+			}
+		}
+	}
+	
 	//Write to new window
-		var myWindow = window.open("", "Quiz Results", "width=800,height=800");
-		myWindow.document.write("<h3>Painting Quiz Results:</h3>")
-		myWindow.document.write("<p><strong>You scored: " + score +"%</strong></p>");	
+	function OutputResults(score){
+		var myWindow = window.open("", "Quiz Results", "width=800,height= auto,scrollbars=yes");
+		myWindow.document.write("<div><h3>Painting Quiz Results:</h3>")
+		myWindow.document.write("<p><strong>You scored: " + score +"%</strong></p>");
+		//Display Q1
+		myWindow.document.write("<tbody><tr><br/><br/>1. Which of the following is a type of paintbrush: <br/>" +
+								"<th>A. Bright<br/></th><th>B. Square<br/></th><th>C. Dark<br/></th><th>D. Circle<br/></th></tr>");
+		myWindow.document.writeln("<br/>Your Choice: " + userAns[0] + "<br/>Correct Choice: " + answers[0]);
+		//Display Q2
+		myWindow.document.write("<tbody><tr><br/><br/>2. What color results from mixing cadmium yellow and ivory? <br/>" +
+								"<th>A. Orange<br/></th><th>B. Brown<br/></th><th>C. Green<br/></th><th>D. The color remains black.<br/></th></tr>");
+		myWindow.document.writeln("<br/>Your Choice: " + userAns[1] + "<br/>Correct Choice: " + answers[1]);
+		//Display Q3
+		myWindow.document.write("<tbody><tr><br/><br/>3. An artist typically paints on a:<br/>" +
+								"<th>A. Palette<br/></th><th>B. Canvas<br/></th><th>C. Each other<br/></th><th>D. Their dogs<br/></th></tr>");
+		myWindow.document.writeln("<br/>Your Choice: " + userAns[2] + "<br/>Correct Choice: " + answers[2]);
+		//Display Q4
+		myWindow.document.write("<tbody><tr><br/><br/>4. To mix paint, an artist uses:  <br/>" +
+								"<th>A. A palette razor<br/></th><th>B. A palette knife<br/></th><th>C. A sight stick<br/></th><th>D. A pinata stick<br/></th></tr>");
+		myWindow.document.writeln("<br/>Your Choice: " + userAns[3] + "<br/>Correct Choice: " + answers[3]);
+		//Display Q5
+		myWindow.document.write("<tbody><tr><br/><br/>5. Which statment is correct?  <br/>" +
+								"<th>A. Form follows function.<br/></th><th>B. Function follows form.<br/></th><th>C. Function is irrelevant.<br/></th><th>D. Form is irrelevant.<br/></th></tr>");
+		myWindow.document.writeln("<br/>Your Choice: " + userAns[4] + "<br/>Correct Choice: " + answers[4]);
+		myWindow.document.writeln()
 	}
 	
-	function GradeQuiz(){
-	var score = checkAnswers();
-	OutputResults(score);
+	function unhide(clickedButton, divID) {
+		var item = document.getElementById(divID);
+		var reference = document.getElementById("reference");
+		if (item) {
+			if(item.className=='hidden'){
+				item.className = 'unhidden' ;
+				clickedButton.value = 'Take Quiz'
+				reference.className='hidden';
+			}
+			else{
+				item.className = 'hidden';
+				clickedButton.value = 'unhide'
+			}
+		}
 	}
+
+	/*//Function used to test that array was populating correctly
+	function alertUserAnswers(){
+		for (var i =0; i < userAns.length; i++){
+			alert("Your answer for Q" + [i +1] + ": " + userAns[i]);
+		}
+	}
+	}*/
+	
+
 </script>
 </head>
 
 <body>
-<h3>Painting</h3>
+<h1>Lesson 10:</h1>
+<div class= "painting">
+	<div id="reference" class= "info">
+		<h3>My Hobby: Painting</h3>
+		<p>I enjoy painting. I have painted since the age of 5 years old. I paint with anything from 
+		watercolors to oil paints. Because of my love for art, I pursued a Bachelors Degree in Fine Arts
+		where I took many painting classes. During my studies I learned ALOT of information about painting.</p>
+		<p>Upon my first day of class I stocked up on the basics: paintbrushes, painter's palettes, canvases,
+		and paints. If you don't know anything about painting, the choices are overwhelming when it comes to 
+		buying supplies. The most common shaped brushes are flats, filberts, brights, and rounds. These brushes
+		are numbered on the handle to indicate the size. When using oil paint, canvas is the typical surface to
+		paint on, however "form follows function" so it really just depends on what your goal is. Some artist paint
+		on wood with their oil paints, but that requires alot of <a href="http://www.artistdaily.com/blogs/the-artists-life/what-the-heck-is-gesso">gesso</a>.</p>
+		<p>You obviously need paints to paint... the basic oil paints that you should have in your toolbox are: Titanium White,
+		Ivory Black, Cadmium Red, Alizarin Crimson, Ultramarine Blue, Pthalo Blue, Cadmium Yellow, and Cadmium Yellow Light. 
+		If you have these primary colors, you can mix ANY color you'll ever need by squirting a dab of paint on your palette 
+		and using your palette knife to mix the colors. For example, if you want a green, just mix Cadmium yellow and Ivory Black. 
+		It creates a very earthy grean as opposed to mixing blue and yellow.</p>
+		<p>Once you are done painting, you will have to clean up. You will need turpintine (a paint thinner) and a razor blade 
+		so that you can scrape off the excess paint on your palette. You will also need paper towels and a fire-proof trashcan (turpintine will
+		spontaneously combust when on balled up paper towels). Once everything is clean, you will need to put the painting someplace safe where
+		it can dry.It takes oil paint about 3 weeks to dry depending on how thickly you applied the paint. After the painting is dry, you can hang it up to enjoy
+		forever... or enjoy until you don't enjoy it anymore. Then you can just paint over it or sell it.</p>
+		
+		<p>If you are ready to take the quiz, Click the button below. Once you start the quiz, you will not be able to go back for reference.</p>
+		<input type="button" onclick="unhide(this,'test')" value="Take Quiz">
+	</div>
+</div>
 <hr />
+<div id="test" class="hidden">
+	<div class="quiz">
+		<h3>Painting Quiz</h3>
+		<form name = "paintingQuiz" id="paintingQuiz"> 
+		<!--Question 1-->
+		1. Which of the following is a type of paintbrush:<br/>
+			<input type="radio" name="Q1" value="A">Bright<br/>
+			<input type="radio" name="Q1" value="B">Square<br/>
+			<input type="radio" name="Q1" value="C">Dark<br/>
+			<input type="radio" name="Q1" value="D">Circle<br/><br/>
+		<!--Question 2-->
+		2. What color results from mixing cadmium yellow and ivory?<br/>
+			<input type="radio" name="Q2" value="A">Orange<br/>
+			<input type="radio" name="Q2" value="B">Brown<br/>
+			<input type="radio" name="Q2" value="C">Green<br/>
+			<input type="radio" name="Q2" value="D">The color remains black.<br/><br/>
+			
+		<!--Question 3-->
+		3. An artist typically paints on a: <br/>
+			<input type="radio" name="Q3" value="A">Palette<br/>
+			<input type="radio" name="Q3" value="B">Canvas<br/>
+			<input type="radio" name="Q3" value="C">Each other<br/>
+			<input type="radio" name="Q3" value="D">Their dogs<br/><br/>
 
-
-<form name = "paintingQuiz" id="paintingQuiz"> 
-<!--Question 1-->
-1. Which of the following is a type of paintbrush:<br/>
-	<input type="radio" name="Q1" value="bright">Bright<br/>
-	<input type="radio" name="Q1" value="sqaure">Square<br/>
-	<input type="radio" name="Q1" value="dark">Dark<br/>
-	<input type="radio" name="Q1" value="circle">Circle<br/><br/>
-<!--Question 2-->
-2. What color results from mixing cadmium yellow and ivory?<br/>
-	<input type="radio" name="Q2" value="orange">Orange<br/>
-	<input type="radio" name="Q2" value="brown">Brown<br/>
-	<input type="radio" name="Q2" value="green">Green<br/>
-	<input type="radio" name="Q2" value="black">The color remains black.<br/><br/>
-	
-<!--Question 3-->
-3. An artist typically paints on a: <br/>
-	<input type="radio" name="Q3" value="palette">Palette<br/>
-	<input type="radio" name="Q3" value="canvas">Canvas<br/>
-	<input type="radio" name="Q3" value="people">Each other<br/>
-	<input type="radio" name="Q3" value="pets">Their dogs<br/><br/>
-
-<!--Question 4-->
-4. To mix paint, an artist uses: <br/>
-	<input type="radio" name="Q4" value="razor">A palette razor<br/>
-	<input type="radio" name="Q4" value="knife">A palette knife<br/>
-	<input type="radio" name="Q4" value="stick">A sight stick<br/>
-	<input type="radio" name="Q4" value="pinata">A pinata stick<br/><br/>
-	
-<!--Question 5-->
-5. Which statment is correct? <br/>
-	<input type="radio" name="Q5" value="formFunction">Form follows function.<br/>
-	<input type="radio" name="Q5" value="functionForm">Function follows form.<br/>
-	<input type="radio" name="Q5" value="noFunction">Function is irrelevant.<br/>
-	<input type="radio" name="Q5" value="noForm">Form is irrelevant.<br/><br/>
-	
-<button type="button" onclick = "GradeQuiz()"> Submit </button>
-<input type="reset" value="Reset" />
-</form>
-
+		<!--Question 4-->
+		4. To mix paint, an artist uses: <br/>
+			<input type="radio" name="Q4" value="A">A palette razor<br/>
+			<input type="radio" name="Q4" value="B">A palette knife<br/>
+			<input type="radio" name="Q4" value="C">A sight stick<br/>
+			<input type="radio" name="Q4" value="D">A pinata stick<br/><br/>
+			
+		<!--Question 5-->
+		5. Which statment is correct? <br/>
+			<input type="radio" name="Q5" value="A">Form follows function.<br/>
+			<input type="radio" name="Q5" value="B">Function follows form.<br/>
+			<input type="radio" name="Q5" value="C">Function is irrelevant.<br/>
+			<input type="radio" name="Q5" value="D">Form is irrelevant.<br/><br/>
+			
+		<button type="button" onclick = "main()"> Submit </button>
+		<input type="reset" value="Reset" />
+		</form>
+	</div>
+</div>
 </body>
 </html>
